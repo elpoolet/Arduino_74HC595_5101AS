@@ -1,5 +1,13 @@
 
 ///
+/// 
+///   --- Test arduino
+///   --- par Laurent "Junior" VOUDON
+///
+///
+///
+
+
 /// --- Déclaration des variables GLOBALES
 
 /// *** Brochage du 74HC595
@@ -10,13 +18,13 @@ const int horloge = 12;
 //Broche connectée au DS du 74HC595 (PIN 14)
 const int data = 10;
 
-// *** Brochage dues interrupteurs
+// *** Brochage des interrupteurs
 const int button = 2;
 
 
 // --- Définition des différents caractères à transmettre pour afficher un chiffre
 // --- Définis par correspondance binaire
-// aevc brochage suivant au niveau du 74HC595
+// avec brochage suivant au niveau du 74HC595
 // 74 -> segment du 5101AS à Katode Commune
 // Q0 -> a
 // Q1 -> b    etc...
