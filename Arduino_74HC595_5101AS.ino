@@ -2,7 +2,7 @@
 ///
 /// 
 ///   --- Test arduino
-///   --- par Laurent "Junior" VOUDON
+///   --- par Laurent "elpoolet" VOUDON
 ///
 ///
 ///
@@ -18,6 +18,7 @@ const int verrou = 11;
 const int horloge = 12;
 //Broche connectée au DS du 74HC595 (PIN 14)
 const int data = 10;
+
 
 // *** Brochage des interrupteurs
 const int button = 2;
@@ -50,7 +51,7 @@ const char seg_0 = 252;
 const char seg_clear = 0; 
 
 
-boolean bClear = false ;
+boolean bDisplayIsClear = false ;
 
 
 
@@ -58,6 +59,7 @@ boolean bClear = false ;
 ///
 /// --- Fonction "setup"
 void setup() {
+  //Serial.begin(9600);
   // on met la broche du bouton en INPUT_PULLUP
   // de cetta manière l'état logique du bouton (LOW , HIGH) correspond à l'état pysique LOW:enfoncé
   pinMode(button,INPUT_PULLUP) ;
@@ -65,6 +67,21 @@ void setup() {
   pinMode(verrou, OUTPUT);
   pinMode(horloge, OUTPUT);
   pinMode(data, OUTPUT);
+  // LED interne
+  // initialize digital pin 13 as an output.
+  pinMode(13, OUTPUT);
+  // faire clignoter la LED 2 fois
+  digitalWrite(13, HIGH);
+  delay(1000);
+  digitalWrite(13, LOW);
+  delay(1000);
+  digitalWrite(13, HIGH);
+  delay(1000);
+  digitalWrite(13, LOW);
+
+  // init du générateur de nombre aléatoires
+  randomSeed(analogRead(0));
+    
 }
 
 
@@ -73,11 +90,14 @@ void loop() {
   int buttonStatus = digitalRead(button) ;
   int randNumber = 0 ;
   int randIter = 0;
+
+  digitalWrite(13, LOW);
   
   // si le bonton a été appuyé
   if (buttonStatus == LOW) {
-    // init du générateur de nombre aléatoires
-    randomSeed(analogRead(0));
+    //Serial.println("Appui sur le bouton");
+    digitalWrite(13, HIGH);
+    
     delay(50);
     randIter = random(0 , 32763);
     randomSeed(randIter);
@@ -88,17 +108,18 @@ void loop() {
     for (int i=0 ; i < randIter ; i++) {
       randNumber = random(0, 9);
       display_5101_74HC(randNumber) ;
-      delay(50);
+      delay(70);
     }
     delay(5000);
-    bClear = false ;
+    bDisplayIsClear = false ;
+    //Serial.println("Fin trt bouton");
   }
   
   // on clear...
-  if (!bClear) {
+  if (!bDisplayIsClear) {
     int cpt = 99 ;
     display_5101_74HC(cpt) ;
-    bClear = true ;
+    bDisplayIsClear = true ;
   }
   
   // on fait une pause de 100ms
